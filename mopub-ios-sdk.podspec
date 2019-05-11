@@ -39,8 +39,8 @@ Pod::Spec.new do |spec|
 
   spec.subspec 'MoPubSDK' do |sdk|
     sdk.dependency              'mopub-ios-sdk/Core'
-    sdk.dependency              'mopub-ios-sdk/Avid'
-    sdk.dependency              'mopub-ios-sdk/Moat'
+    # sdk.dependency              'mopub-ios-sdk/Avid'
+    # sdk.dependency              'mopub-ios-sdk/Moat'
   end
 
   spec.subspec 'Core' do |core|
