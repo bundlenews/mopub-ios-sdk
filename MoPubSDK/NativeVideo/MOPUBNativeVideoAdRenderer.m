@@ -198,6 +198,7 @@ static const CGFloat kAutoPlayTimerInterval = 0.25f;
         if ([self.adView respondsToSelector:@selector(layoutCustomAssetsWithProperties:imageLoader:)]) {
             // Create a simplified image loader for the ad view to use.
             MPNativeAdRenderingImageLoader *imageLoader = [[MPNativeAdRenderingImageLoader alloc] initWithImageHandler:self.rendererImageHandler];
+            [self.adapter.properties setValue:@"mobup" forKey:@"ad"];
             [self.adView layoutCustomAssetsWithProperties:self.adapter.properties imageLoader:imageLoader];
         }
     }

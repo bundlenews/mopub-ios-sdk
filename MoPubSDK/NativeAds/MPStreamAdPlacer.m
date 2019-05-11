@@ -114,9 +114,6 @@ static const NSUInteger kIndexPathItemIndex = 1;
     }
 
     [view addSubview:[adData.ad retrieveAdViewWithError:nil]];
-
-    CGSize adSize = [self sizeForAd:adData.ad withMaximumWidth:view.bounds.size.width andIndexPath:indexPath];
-    [adData.ad updateAdViewSize:adSize];
 }
 
 - (CGSize)sizeForAdAtIndexPath:(NSIndexPath *)indexPath withMaximumWidth:(CGFloat)maxWidth

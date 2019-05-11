@@ -1783,7 +1783,9 @@
 				AEF1F32A16EF9AD700273462 /* Frameworks */,
 				AEF1F32916EF9AD700273462 /* Products */,
 			);
+			indentWidth = 4;
 			sourceTree = "<group>";
+			tabWidth = 4;
 		};
 		AEF1F32916EF9AD700273462 /* Products */ = {
 			isa = PBXGroup;
