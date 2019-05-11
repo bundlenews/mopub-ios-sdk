@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
                             To learn more or sign up for an account, go to http://www.mopub.com. \n
                           DESC
   spec.social_media_url = 'http://twitter.com/mopub'
-  spec.source           = { :git => 'https://github.com/bundlenews/mopub-ios-sdk.git', :tag => '5.1.0' }
+  spec.source           = { :git => 'https://github.com/bundlenews/mopub-ios-sdk.git', :tag => '5.1.0-bundle' }
   spec.requires_arc     = true
   spec.ios.deployment_target = '8.0'
   spec.frameworks       = [
@@ -39,8 +39,8 @@ Pod::Spec.new do |spec|
 
   spec.subspec 'MoPubSDK' do |sdk|
     sdk.dependency              'mopub-ios-sdk/Core'
-    # sdk.dependency              'mopub-ios-sdk/Avid'
-    # sdk.dependency              'mopub-ios-sdk/Moat'
+    sdk.dependency              'mopub-ios-sdk/Avid'
+    sdk.dependency              'mopub-ios-sdk/Moat'
   end
 
   spec.subspec 'Core' do |core|
