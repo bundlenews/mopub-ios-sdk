@@ -1,8 +1,9 @@
 //
 //  MPCoreInstanceProvider.m
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPCoreInstanceProvider.h"
@@ -45,10 +46,6 @@ typedef enum
 @end
 
 @implementation MPCoreInstanceProvider
-
-@synthesize singletons = _singletons;
-@synthesize carrierInfo = _carrierInfo;
-@synthesize twitterDeepLinkStatus = _twitterDeepLinkStatus;
 
 static MPCoreInstanceProvider *sharedProvider = nil;
 
@@ -168,13 +165,6 @@ static MPCoreInstanceProvider *sharedProvider = nil;
     }
 
     return gestureRecognizer;
-}
-
-- (MPAnalyticsTracker *)sharedMPAnalyticsTracker
-{
-    return [self singletonForClass:[MPAnalyticsTracker class] provider:^id{
-        return [MPAnalyticsTracker tracker];
-    }];
 }
 
 - (MPATSSetting)appTransportSecuritySettings

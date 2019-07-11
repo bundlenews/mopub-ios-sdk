@@ -1,8 +1,9 @@
 //
 //  MRExpandModalViewController.m
-//  MoPubSDK
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MRExpandModalViewController.h"
@@ -77,12 +78,7 @@
     [UIViewController attemptRotationToDeviceOrientation];
 }
 
-// supportedInterfaceOrientations and shouldAutorotate are for ios 6, 7, and 8.
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= MP_IOS_9_0
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
-#else
-- (NSUInteger)supportedInterfaceOrientations
-#endif
 {
     return ([[UIApplication sharedApplication] mp_supportsOrientationMask:self.supportedOrientationMask]) ? self.supportedOrientationMask : UIInterfaceOrientationMaskAll;
 }

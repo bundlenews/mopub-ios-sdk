@@ -1,8 +1,9 @@
 //
 //  MPCollectionViewAdPlacer.m
-//  MoPub
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPCollectionViewAdPlacer.h"
@@ -104,17 +105,14 @@ static NSString * const kCollectionViewAdPlacerReuseIdentifier = @"MPCollectionV
 - (void)adPlacer:(MPStreamAdPlacer *)adPlacer didLoadAdAtIndexPath:(NSIndexPath *)indexPath
 {
     BOOL animationsWereEnabled = [UIView areAnimationsEnabled];
-    // Do not perform animations
-    @try {
-        [UIView setAnimationsEnabled:NO];
-        [self.collectionView insertItemsAtIndexPaths:@[indexPath]];
-    }
-    @catch (NSException *exception) {
-        NSLog(@"%@", exception.reason);
-    }
-    @finally {
-        [UIView setAnimationsEnabled: animationsWereEnabled];
-    }
+    //We only want to enable animations if the index path is before or within our visible cells
+    BOOL animationsEnabled = ([(NSIndexPath *)[self.collectionView.indexPathsForVisibleItems lastObject] compare:indexPath] != NSOrderedAscending) && animationsWereEnabled;
+
+    [UIView setAnimationsEnabled:animationsEnabled];
+
+    [self.collectionView insertItemsAtIndexPaths:@[indexPath]];
+
+    [UIView setAnimationsEnabled:animationsWereEnabled];
 }
 
 - (void)adPlacer:(MPStreamAdPlacer *)adPlacer didRemoveAdsAtIndexPaths:(NSArray *)indexPaths
@@ -147,6 +145,14 @@ static NSString * const kCollectionViewAdPlacerReuseIdentifier = @"MPCollectionV
 {
     if ([self.delegate respondsToSelector:@selector(nativeAdWillLeaveApplicationFromCollectionViewAdPlacer:)]) {
         [self.delegate nativeAdWillLeaveApplicationFromCollectionViewAdPlacer:self];
+    }
+}
+
+- (void)mopubAdPlacer:(id<MPMoPubAdPlacer>)adPlacer didTrackImpressionForAd:(id<MPMoPubAd>)ad withImpressionData:(MPImpressionData *)impressionData {
+    if ([self.delegate respondsToSelector:@selector(mopubAdPlacer:didTrackImpressionForAd:withImpressionData:)]) {
+        [self.delegate mopubAdPlacer:self
+             didTrackImpressionForAd:ad
+                  withImpressionData:impressionData];
     }
 }
 

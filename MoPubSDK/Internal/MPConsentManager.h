@@ -1,8 +1,9 @@
 //
 //  MPConsentManager.h
-//  MoPubSDK
 //
-//  Copyright © 2018 MoPub. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <UIKit/UIKit.h>
@@ -17,6 +18,11 @@
  @remark This should only be set by SDK initialization and must be non-nil.
  */
 @property (nonatomic, strong, nonnull) NSString * adUnitIdUsedForConsent;
+
+/**
+ This API can be used if you want to allow supported SDK networks to collect user information on the basis of legitimate interest. The default value is @c NO.
+ */
+@property (nonatomic, assign) BOOL allowLegitimateInterest;
 
 /**
  Flag indicating that personally identifiable information can be collected.
@@ -98,7 +104,9 @@
  If a consent dialog is loaded, this method will present it modally from the given `viewController`. If no consent
  dialog is loaded this method will do nothing. `completion` is called upon successful presentation; it is not called otherwise.
  */
-- (void)showConsentDialogFromViewController:(UIViewController * _Nonnull)viewController completion:(void (^_Nullable)(void))completion;
+- (void)showConsentDialogFromViewController:(UIViewController * _Nonnull)viewController
+                                    didShow:(void (^ _Nullable)(void))didShow
+                                 didDismiss:(void (^ _Nullable)(void))didDismiss;
 
 @end
 

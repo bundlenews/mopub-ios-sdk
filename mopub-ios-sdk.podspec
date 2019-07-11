@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
   spec.name             = 'mopub-ios-sdk'
   spec.module_name      = 'MoPub'
-  spec.version          = '5.1.0'
+  spec.version          = '5.7.1'
   spec.license          = { :type => 'New BSD', :file => 'LICENSE' }
   spec.homepage         = 'https://github.com/mopub/mopub-ios-sdk'
   spec.authors          = { 'MoPub' => 'support@mopub.com' }
@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
                             To learn more or sign up for an account, go to http://www.mopub.com. \n
                           DESC
   spec.social_media_url = 'http://twitter.com/mopub'
-  spec.source           = { :git => 'https://github.com/bundlenews/mopub-ios-sdk.git', :branch => 'bundle-patches', :tag => '5.1.1-bundle' }
+  spec.source           = { :git => 'https://github.com/mopub/mopub-ios-sdk.git', :tag => '5.7.1' }
   spec.requires_arc     = true
   spec.ios.deployment_target = '8.0'
   spec.frameworks       = [
@@ -39,13 +39,13 @@ Pod::Spec.new do |spec|
 
   spec.subspec 'MoPubSDK' do |sdk|
     sdk.dependency              'mopub-ios-sdk/Core'
-    # sdk.dependency              'mopub-ios-sdk/Avid'
-    # sdk.dependency              'mopub-ios-sdk/Moat'
+    sdk.dependency              'mopub-ios-sdk/Avid'
+    sdk.dependency              'mopub-ios-sdk/Moat'
   end
 
   spec.subspec 'Core' do |core|
     core.source_files         = 'MoPubSDK/**/*.{h,m}'
-    core.resources            = ['MoPubSDK/**/*.{png,bundle,xib,nib,html}', 'MoPubSDK/**/MPAdapters.plist']
+    core.resources            = ['MoPubSDK/**/*.{png,bundle,xib,nib}', 'MoPubSDK/**/MPAdapters.plist']
     core.exclude_files        = ['MoPubSDK/Viewability/Moat', 'MoPubSDK/Viewability/Avid']
   end
 
@@ -61,3 +61,4 @@ Pod::Spec.new do |spec|
     moat.source_files         = 'MoPubSDK/Viewability/MOAT/*.{h,m}'
   end
 end
+

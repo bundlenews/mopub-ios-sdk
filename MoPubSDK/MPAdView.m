@@ -1,16 +1,19 @@
 //
 //  MPAdView.m
-//  MoPub
 //
-//  Created by Nafis Jamal on 1/19/11.
-//  Copyright 2011 MoPub, Inc. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPAdView.h"
+#import "MoPub+Utility.h"
+#import "MPAdTargeting.h"
 #import "MPBannerAdManager.h"
 #import "MPBannerAdManagerDelegate.h"
 #import "MPClosableView.h"
 #import "MPCoreInstanceProvider.h"
+#import "MPImpressionTrackedNotification.h"
 #import "MPLogging.h"
 
 @interface MPAdView () <MPBannerAdManagerDelegate>
@@ -78,7 +81,13 @@
 
 - (void)loadAd
 {
-    [self.adManager loadAd];
+    MPAdTargeting * targeting = [[MPAdTargeting alloc] init];
+    targeting.keywords = self.keywords;
+    targeting.localExtras = self.localExtras;
+    targeting.location = self.location;
+    targeting.userDataKeywords = self.userDataKeywords;
+
+    [self.adManager loadAdWithTargeting:targeting];
 }
 
 - (void)refreshAd
@@ -143,14 +152,22 @@
     [self setAdContentView:nil];
 }
 
-- (void)managerDidFailToLoadAd
+- (void)managerDidFailToLoadAdWithError:(NSError *)error
 {
     if ([self.delegate respondsToSelector:@selector(adViewDidFailToLoadAd:)]) {
         // make sure we are not released synchronously as objects owned by us
         // may do additional work after this callback
         [[MPCoreInstanceProvider sharedProvider] keepObjectAliveForCurrentRunLoopIteration:self];
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         [self.delegate adViewDidFailToLoadAd:self];
+#pragma GCC diagnostic pop
+    }
+    if ([self.delegate respondsToSelector:@selector(adView:didFailToLoadAdWithError:)]) {
+        // make sure we are not released synchronously as objects owned by us
+        // may do additional work after this callback
+        [[MPCoreInstanceProvider sharedProvider] keepObjectAliveForCurrentRunLoopIteration:self];
+        [self.delegate adView:self didFailToLoadAdWithError:error];
     }
 }
 
@@ -181,6 +198,12 @@
     if ([self.delegate respondsToSelector:@selector(willLeaveApplicationFromAd:)]) {
         [self.delegate willLeaveApplicationFromAd:self];
     }
+}
+
+- (void)impressionDidFireWithImpressionData:(MPImpressionData *)impressionData {
+    [MoPub sendImpressionDelegateAndNotificationFromAd:self
+                                              adUnitID:self.adUnitId
+                                        impressionData:impressionData];
 }
 
 @end
