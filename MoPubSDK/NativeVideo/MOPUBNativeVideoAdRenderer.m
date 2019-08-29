@@ -102,6 +102,9 @@ static const CGFloat kAutoPlayTimerInterval = 0.25f;
     if ([self.adView respondsToSelector:@selector(nativeMainTextLabel)]) {
         self.adView.nativeMainTextLabel.text = [adapter.properties objectForKey:kAdTextKey];
     }
+    if ([self.adView respondsToSelector:@selector(hiddenURLLabel)]) {
+        self.adView.hiddenURLLabel.text = [adapter.properties objectForKey:@"client_logo"];
+    }
 
     if ([self.adView respondsToSelector:@selector(nativeTitleTextLabel)]) {
         self.adView.nativeTitleTextLabel.text = [adapter.properties objectForKey:kAdTitleKey];

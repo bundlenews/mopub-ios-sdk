@@ -21,6 +21,7 @@
 
 @optional
 
+- (UILabel *) hiddenURLLabel;
 /**
  * Return the UILabel that your view is using for the main text.
  *

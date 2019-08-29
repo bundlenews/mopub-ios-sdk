@@ -87,9 +87,14 @@ const CGFloat MPNativeViewDynamicDimension = -1.0;
     // We only load text here. We delay loading of images until the view is added to the view hierarchy
     // so we don't unnecessarily load images from the cache if the user is scrolling fast. So we will
     // just store the image URLs for now.
+    if ([self.adView respondsToSelector:@selector(hiddenURLLabel)]) {
+        self.adView.hiddenURLLabel.text = [adapter.properties objectForKey:@"client_logo"];
+    }
+    
     if ([self.adView respondsToSelector:@selector(nativeMainTextLabel)]) {
         self.adView.nativeMainTextLabel.text = [adapter.properties objectForKey:kAdTextKey];
     }
+    
 
     if ([self.adView respondsToSelector:@selector(nativeTitleTextLabel)]) {
         self.adView.nativeTitleTextLabel.text = [adapter.properties objectForKey:kAdTitleKey];
