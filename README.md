@@ -6,50 +6,100 @@ Sign up for an account at [http://app.mopub.com/](http://app.mopub.com/).
 
 ## Need Help?
 
-You can find integration documentation on our [wiki](https://github.com/mopub/mopub-ios-sdk/wiki/Getting-Started) and additional help documentation on our [developer help site](https://www.mopub.com/resources/docs).
+You can find integration documentation on our [developer help site](https://developers.mopub.com/publishers/ios/get-started/). Additional documentation can be found [here](https://www.mopub.com/resources/docs).
 
 To file an issue with our team, email [support@mopub.com](mailto:support@mopub.com).
-
-**Please Note: We no longer accept GitHub Issues**
 
 ## New Pull Requests?
 
 Thank you for submitting pull requests to the MoPub iOS GitHub repository. Our team regularly monitors and investigates all submissions for inclusion in our official SDK releases. Please note that MoPub does not directly merge these pull requests at this time. Please reach out to your account team or [support@mopub.com](mailto:support@mopub.com) if you have further questions.
 
 ## Disclosure
-MoPub SDK 4.16 and above integrates technology from our partners Integral Ad Science, Inc. (“IAS”) and Moat, Inc. (“Moat”) in order to support viewability measurement and other proprietary reporting that [IAS](https://integralads.com/capabilities/viewability/) and [Moat](https://moat.com/analytics) provide to their advertiser and publisher clients. You have the option to remove or disable this technology by following the opt-out instructions [below](#disableViewability).  
+MoPub SDK 4.16 and above integrates technology from our partners Integral Ad Science, Inc. (“IAS”) and Moat, Inc. (“Moat”) in order to support viewability measurement and other proprietary reporting that [IAS](https://integralads.com/capabilities/viewability/) and [Moat](https://moat.com/analytics) provide to their advertiser and publisher clients. You have the option to remove or disable this technology by following the opt-out instructions [below](#disableViewability).
 
 If you do not remove or disable IAS's and/or Moat’s technology in accordance with these instructions, you agree that IAS's [privacy policy](https://integralads.com/privacy-policy/) and [license](https://integralads.com/sdk-license-agreement) and Moat’s [privacy policy](https://moat.com/privacy),  [terms](https://moat.com/terms), and [license](https://moat.com/sdklicense.txt), respectively, apply to your integration of these partners' technologies into your application.
 
-## Download
+## Installation
 
-The MoPub SDK is distributed as source code that you can include in your application.  MoPub provides two prepackaged archives of source code:
+The MoPub SDK supports multiple methods for installing the library in a project.
 
-- **[MoPub Base SDK.zip](http://bit.ly/2bH8ObO)**
+The current version of the SDK is 5.9.0
+
+### Installation with CocoaPods
+
+[CocoaPods](https://cocoapods.org/) is a dependency manager for Swift and Objective-C Cocoa projects, which automates and simplifies the process of using 3rd-party libraries like the MoPub SDK in your projects. You can install it with the following command:
+
+```
+$ gem install cocoapods
+```
+
+**Podfile**
+To integrate MoPub SDK into your Xcode project using CocoaPods, specify it in your Podfile:
+
+```
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '9.0'
+use_frameworks!
+
+target 'MyApp' do
+  pod 'mopub-ios-sdk', '~> 5.9'
+end
+```
+
+Then, run the following command:
+
+```
+$ pod install
+```
+
+### Manual Integration with Dynamic Framework
+
+MoPub provides a prepackaged archive of the dynamic framework:
+
+- **[MoPub SDK Framework.zip](https://github.com/mopub/mopub-ios-sdk/releases/download/5.9.0/mopub-framework-5.9.0.zip)**
 
   Includes everything you need to serve HTML, MRAID, and Native MoPub advertisements.  Third party ad networks are not included.
 
-- **[MoPub Base SDK Excluding Native.zip](http://bit.ly/2bCCgRw)**
+Add the dynamic framework to the target's Embedded Binaries section of the General tab.
+
+### Manual Integration with Source Code
+
+MoPub provides two prepackaged archives of source code:
+
+- **[MoPub Base SDK.zip](https://github.com/mopub/mopub-ios-sdk/releases/download/5.9.0/mopub-base-5.9.0.zip)**
+
+  Includes everything you need to serve HTML, MRAID, and Native MoPub advertisements.  Third party ad networks are not included.
+
+- **[MoPub Base SDK Excluding Native.zip](https://github.com/mopub/mopub-ios-sdk/releases/download/5.9.0/mopub-nonnative-5.9.0.zip)**
 
   Includes everything you need to serve HTML and MRAID advertisements.  Third party ad networks and Native MoPub advertisements are not included.
-
-The current version of the SDK is 5.1.0
 
 ## Integrate
 
 Integration instructions are available on the [wiki](https://github.com/mopub/mopub-ios-sdk/wiki/Getting-Started).
-
-More detailed class documentation is available in the repo under the `ClassDocumentation` folder.  This can be viewed [online too](http://htmlpreview.github.com/?https://github.com/mopub/mopub-ios-sdk/blob/master/ClassDocumentation/index.html).
 
 ## New in this Version
 
 Please view the [changelog](https://github.com/mopub/mopub-ios-sdk/blob/master/CHANGELOG.md) for details.
 
 - **Features**
-	- Updated `MPReachability` to be IPv6 compliant.
-	- Allow publishers to determine which users should be treated as GDPR compliant users through the new API `forceGDPRApplicable`.
-	- Alert a publisher (through logs) when they are trying to use the new GDPR consent flow without being whitelisted.
-	- Banner refresh will only occur after an impression.
+  - Add iOS 13 support to both SDK and MoPub Sample app. 
+  - Totally remove `UIWebView` implementation and comments in MoPub SDK and MoPub Sample app.
+  - Add multi-window support for MoPub Sample app in iPadOS 13. New window can be opened by Drag & Dropping an ad cell in the ad list.
+  - Remove support for `tel` and `sms` functions for MRAID ads.
+  - Add Dark Mode support for MoPub Sample app in iOS 13.
+  - Remove the Objective C sample app project.
+  - Adopt `XCFramework` and the new Xcode build system with fastlane script updates, and thus require Xcode 11 to build instead of Xcode 9.
+  - Remove deprecated VAST extension `MoPubViewabilityTracker`.
+  - Replace deprecated `MPMoviePlayerViewController` with `AVPlayerViewController`. This affects MRAID videos.
+  - Replace deprecated `UIAlertView` with `UIAlertViewController`.
+
+- **Bug Fixes**
+  - Update `MPRealTimeTimer` so that it can properly handle foreground notifications that aren't balanced with backgrounding notifications.
+  - Fix an assertion crash in GDPR Sync that only happens in debug builds.
+  - Present `SKStoreProductViewController` only in portrait mode, so that we can prevent a `SKStoreProductViewController` crash in landscape mode (as designed by Apple).
+  - Fix an infinite load ad bug that happens when the ad URL to retry is the same as the failed ad URL.
+  - Fix a bug where location information is not sent to Ad Server when location permission has been allowed, the app can collect PII, and no app-specified location is set.
 
 See the [Getting Started Guide](https://github.com/mopub/mopub-ios-sdk/wiki/Getting-Started#app-transport-security-settings) for instructions on setting up ATS in your app.
 
@@ -75,8 +125,8 @@ If you would like to opt out of viewability measurement but do not want to modif
 
 ## Requirements
 
-- iOS 8.0 and up
-- Xcode 9.0 and up
+- iOS 9.0 and up
+- Xcode 11.0 and up
 
 ## License
 

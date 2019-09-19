@@ -1,8 +1,9 @@
 //
 //  MPRewardedVideo+Testing.m
-//  MoPubSDK
 //
-//  Copyright © 2017 MoPub. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import <objc/runtime.h>
@@ -88,6 +89,14 @@ static void(^sDidSendServerToServerCallbackUrl)(NSURL * url) = nil;
     MPRewardedVideoAdManager * adManager = sharedInstance.rewardedVideoAdManagers[adUnitID];
 
     return adManager;
+}
+
++ (MPRewardedVideoAdManager *)makeAdManagerForAdUnitId:(NSString *)adUnitId {
+    MPRewardedVideoAdManager * manager = [[MPRewardedVideoAdManager alloc] initWithAdUnitID:adUnitId delegate:MPRewardedVideo.sharedInstance];
+    MPRewardedVideo *sharedInstance = [MPRewardedVideo sharedInstance];
+    sharedInstance.rewardedVideoAdManagers[adUnitId] = manager;
+
+    return manager;
 }
 
 #pragma mark - Swizzles

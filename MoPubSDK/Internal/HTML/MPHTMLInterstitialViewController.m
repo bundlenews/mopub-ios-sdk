@@ -1,8 +1,9 @@
 //
 //  MPHTMLInterstitialViewController.m
-//  MoPub
 //
-//  Copyright (c) 2012 MoPub, Inc. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPHTMLInterstitialViewController.h"
@@ -19,10 +20,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 @implementation MPHTMLInterstitialViewController
-
-@synthesize delegate = _delegate;
-@synthesize backingViewAgent = _backingViewAgent;
-@synthesize backingView = _backingView;
 
 - (void)dealloc
 {
@@ -75,11 +72,6 @@
     [self.backingViewAgent enableRequestHandling];
     [self.backingViewAgent invokeJavaScriptForEvent:MPAdWebViewEventAdDidAppear];
 
-    // XXX: In certain cases, UIWebView's content appears off-center due to rotation / auto-
-    // resizing while off-screen. -forceRedraw corrects this issue, but there is always a brief
-    // instant when the old content is visible. We mask this using a short fade animation.
-    [self.backingViewAgent forceRedraw];
-
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.3];
     self.backingView.alpha = 1.0;
@@ -98,15 +90,6 @@
 {
     [self.backingViewAgent invokeJavaScriptForEvent:MPAdWebViewEventAdDidDisappear];
     [self.delegate interstitialDidDisappear:self];
-}
-
-#pragma mark - Autorotation
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-
-    [self.backingViewAgent rotateToOrientation:self.interfaceOrientation];
 }
 
 #pragma mark - MPAdWebViewAgentDelegate

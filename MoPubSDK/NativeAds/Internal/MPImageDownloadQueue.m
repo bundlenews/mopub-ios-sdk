@@ -1,7 +1,9 @@
 //
 //  MPImageDownloadQueue.m
 //
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPImageDownloadQueue.h"
@@ -37,19 +39,27 @@
     [_imageDownloadQueue cancelAllOperations];
 }
 
-- (void)addDownloadImageURLs:(NSArray *)imageURLs completionBlock:(MPImageDownloadQueueCompletionBlock)completionBlock
+- (void)addDownloadImageURLs:(NSArray<NSURL *> *)imageURLs
+             completionBlock:(MPImageDownloadQueueCompletionBlock)completionBlock
 {
-    [self addDownloadImageURLs:imageURLs completionBlock:completionBlock useCachedImage:YES];
+    [self addDownloadImageURLs:imageURLs useCachedImage:YES completionBlock:completionBlock];
 }
 
-- (void)addDownloadImageURLs:(NSArray *)imageURLs completionBlock:(MPImageDownloadQueueCompletionBlock)completionBlock useCachedImage:(BOOL)useCachedImage
+- (void)addDownloadImageURLs:(NSArray<NSURL *> *)imageURLs
+              useCachedImage:(BOOL)useCachedImage
+             completionBlock:(MPImageDownloadQueueCompletionBlock)completionBlock
 {
+    __block NSMutableDictionary *result = [NSMutableDictionary new];
     __block NSMutableArray *errors = nil;
 
     for (NSURL *imageURL in imageURLs) {
         [self.imageDownloadQueue addOperationWithBlock:^{
             @autoreleasepool {
-                if (![[MPNativeCache sharedCache] cachedDataExistsForKey:imageURL.absoluteString] || !useCachedImage) {
+                if ([[MPNativeCache sharedCache] cachedDataExistsForKey:imageURL.absoluteString] && useCachedImage) {
+                    NSData *imageData = [[MPNativeCache sharedCache] retrieveDataForKey:imageURL.absoluteString];
+                    UIImage *image = [UIImage imageWithData:imageData];
+                    result[imageURL] = image;
+                } else if (![[MPNativeCache sharedCache] cachedDataExistsForKey:imageURL.absoluteString] || !useCachedImage) {
                     MPLogDebug(@"Downloading %@", imageURL);
 
                     __block NSError *error = nil;
@@ -71,6 +81,7 @@
                         UIImage *downloadedImage = [UIImage imageWithData:data];
                         if (downloadedImage != nil) {
                             [[MPNativeCache sharedCache] storeData:data forKey:imageURL.absoluteString];
+                            result[imageURL] = downloadedImage;
                         } else {
                             if (downloadedImage == nil) {
                                 MPLogDebug(@"Error: invalid image data downloaded");
@@ -100,7 +111,7 @@
     [self.imageDownloadQueue addOperationWithBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.isCanceled) {
-                completionBlock(errors);
+                completionBlock(result, errors);
             }
         });
     }];

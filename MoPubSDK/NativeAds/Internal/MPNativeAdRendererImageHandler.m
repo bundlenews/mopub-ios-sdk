@@ -1,6 +1,9 @@
 //
 //  MPNativeAdRendererImageHandler.m
-//  Copyright (c) 2015 MoPub. All rights reserved.
+//
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPNativeAdRendererImageHandler.h"
@@ -61,18 +64,13 @@
 
             __weak __typeof__(self) weakSelf = self;
             [self.imageDownloadQueue addDownloadImageURLs:@[imageURL]
-                                          completionBlock:^(NSArray *errors) {
+                                          completionBlock:^(NSDictionary <NSURL *, UIImage *> *result, NSArray *errors) {
                                               __strong __typeof__(self) strongSelf = weakSelf;
                                               if (strongSelf) {
-                                                  if (errors.count == 0) {
-                                                      UIImage *image = [UIImage imageWithData:[[MPNativeCache sharedCache] retrieveDataForKey:imageURL.absoluteString]];
-
+                                                  UIImage *image = result[imageURL];
+                                                  if (image != nil && errors.count == 0) {
                                                       [strongSelf safeMainQueueSetImage:image intoImageView:imageView];
-                                                  } else {
-                                                      MPLogDebug(@"Failed to download %@ on cache miss. Giving up for now.", imageURL);
                                                   }
-                                              } else {
-                                                  MPLogInfo(@"MPNativeAd deallocated before loadImageForURL:intoImageView: download completion block was called");
                                               }
                                           }];
         }
@@ -86,7 +84,7 @@
             MPLogDebug(@"Cell was recycled. Don't bother setting the image.");
             return;
         }
-        
+
         if (image) {
             imageView.image = image;
         }

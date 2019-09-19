@@ -1,6 +1,9 @@
 //
 //  MPNativeCustomEvent.m
-//  Copyright (c) 2014 MoPub. All rights reserved.
+//
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MPNativeCustomEvent.h"
@@ -22,14 +25,14 @@
     if (self) {
         _imageDownloadQueue = [[MPImageDownloadQueue alloc] init];
     }
-    
+
     return self;
 }
 
 - (void)precacheImagesWithURLs:(NSArray *)imageURLs completionBlock:(void (^)(NSArray *errors))completionBlock
 {
     if (imageURLs.count > 0) {
-        [_imageDownloadQueue addDownloadImageURLs:imageURLs completionBlock:^(NSArray *errors) {
+        [_imageDownloadQueue addDownloadImageURLs:imageURLs completionBlock:^(NSDictionary <NSURL *, UIImage *> *result, NSArray *errors) {
             if (completionBlock) {
                 completionBlock(errors);
             }

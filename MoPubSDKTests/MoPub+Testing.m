@@ -1,8 +1,9 @@
 //
 //  MoPub+Testing.m
-//  MoPubSDKTests
 //
-//  Copyright © 2018 MoPub. All rights reserved.
+//  Copyright 2018-2019 Twitter, Inc.
+//  Licensed under the MoPub SDK License Agreement
+//  http://www.mopub.com/legal/sdk-license-agreement/
 //
 
 #import "MoPub+Testing.h"
@@ -11,6 +12,13 @@
 #pragma clang diagnostic ignored "-Wincomplete-implementation"
 
 @implementation MoPub (Testing)
+
+- (instancetype)initWithExperimentProvider:(MOPUBExperimentProvider *)experimentProvider {
+    if (self = [super init]) {
+        [self commonInitWithExperimentProvider:experimentProvider];
+    }
+    return self;
+}
 
 @end
 
