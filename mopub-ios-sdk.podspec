@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
   spec.name             = 'mopub-ios-sdk'
   spec.module_name      = 'MoPub'
-  spec.version          = '5.1.0'
+  spec.version          = '5.9.0'
   spec.license          = { :type => 'New BSD', :file => 'LICENSE' }
   spec.homepage         = 'https://github.com/mopub/mopub-ios-sdk'
   spec.authors          = { 'MoPub' => 'support@mopub.com' }
@@ -14,11 +14,12 @@ Pod::Spec.new do |spec|
                             To learn more or sign up for an account, go to http://www.mopub.com. \n
                           DESC
   spec.social_media_url = 'http://twitter.com/mopub'
-  spec.source           = { :git => 'https://github.com/bundlenews/mopub-ios-sdk.git', :branch => 'bundle-patches', :tag => '5.1.1-bundle' }
+  spec.source           = { :git => 'https://github.com/bundlenews/mopub-ios-sdk.git', :branch => 'bundle-patches', :tag => '5.9.0' }
   spec.requires_arc     = true
-  spec.ios.deployment_target = '8.0'
+  spec.ios.deployment_target = '9.0'
   spec.frameworks       = [
                             'AVFoundation',
+                            'AVKit',
                             'CoreGraphics',
                             'CoreLocation',
                             'CoreMedia',
