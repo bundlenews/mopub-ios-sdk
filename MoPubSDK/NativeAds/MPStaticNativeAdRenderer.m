@@ -91,6 +91,10 @@ const CGFloat MPNativeViewDynamicDimension = -1.0;
         self.adView.hiddenURLLabel.text = [adapter.properties objectForKey:@"client_logo"];
     }
     
+    if ([self.adView respondsToSelector:@selector(subtitleLabel)]) {
+        self.adView.subtitleLabel.text = [adapter.properties objectForKey:@"subtitle"];
+    }
+    
     if ([self.adView respondsToSelector:@selector(nativeMainTextLabel)]) {
         self.adView.nativeMainTextLabel.text = [adapter.properties objectForKey:kAdTextKey];
     }
